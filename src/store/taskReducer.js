@@ -1,4 +1,4 @@
-import { TASK_UPDATED } from "./actionTypes";
+import { TASK_DELETED, TASK_UPDATED } from "./actionTypes";
 
 export function taskReducer(state = [], action) {
   switch (action.type) {
@@ -11,6 +11,9 @@ export function taskReducer(state = [], action) {
 
       return newState;
     }
+    case TASK_DELETED: {
+      return [...state].filter((element) => element.id !== action.payload.id)
+      }
     default:
       return state;
   }

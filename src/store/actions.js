@@ -1,4 +1,4 @@
-import * as actionTypes from "./actionTypes";
+import * as actionTypes from './actionTypes';
 
 export function taskCompleted(id) {
   return {
@@ -11,5 +11,12 @@ export function titleChanged(id) {
   return {
     type: actionTypes.TASK_UPDATED,
     payload: { id, title: `The task #${id} is completed` },
-  }
+  };
+}
+
+export function taskDeleted(id) {
+  return {
+    type: actionTypes.TASK_DELETED,
+    payload: { id },
+  };
 }
