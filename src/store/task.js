@@ -1,44 +1,37 @@
-const TASK_UPDATED = 'task/updated';
-const TASK_DELETED = 'task/deleted';
+import { createAction, createReducer } from '@reduxjs/toolkit';
+
+const initialState = [
+  { id: 1, title: 'Task 1', completed: false },
+  { id: 2, title: 'Task 2', completed: false },
+  { id: 3, title: 'Task 3', completed: false },
+];
+
+const update = createAction('task/updated');
+const remove = createAction('task/removed');
 
 export function taskCompleted(id) {
-  return {
-    type: TASK_UPDATED,
-    payload: { id, completed: true },
-  };
+  return update({ id, completed: true });
 }
 
 export function titleChanged(id) {
-  return {
-    type: TASK_UPDATED,
-    payload: { id, title: `The task #${id} is completed` },
-  };
+  return update({ id, title: `The task #${id} is completed` });
 }
 
 export function taskDeleted(id) {
-  return {
-    type: TASK_DELETED,
-    payload: { id },
-  };
+  return remove({ id });
 }
 
-export function taskReducer(state = [], action) {
-  switch (action.type) {
-    case TASK_UPDATED: {
-      const newState = [...state];
-      const elementIndex = newState.findIndex(
+const taskReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(update, (state, action) => {
+      const elementIndex = state.findIndex(
         (element) => element.id === action.payload.id
       );
-      newState[elementIndex] = { ...newState[elementIndex], ...action.payload };
-
-      return newState;
-    }
-    case TASK_DELETED: {
-      return [...state].filter((element) => element.id !== action.payload.id)
-      }
-    default:
-      return state;
-  }
-}
+      state[elementIndex] = { ...state[elementIndex], ...action.payload };
+    })
+    .addCase(remove, (state, action) => {
+      return state.filter((element) => element.id !== action.payload.id);
+    });
+});
 
 export default taskReducer;
