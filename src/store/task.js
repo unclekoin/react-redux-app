@@ -1,4 +1,4 @@
-import { createAction, createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = [
   { id: 1, title: 'Task 1', completed: false },
@@ -6,8 +6,22 @@ const initialState = [
   { id: 3, title: 'Task 3', completed: false },
 ];
 
-const update = createAction('task/updated');
-const remove = createAction('task/removed');
+const taskSlice = createSlice({
+  name: 'task', initialState, reducers: {
+    update(state, action) {
+      const elementIndex = state.findIndex(
+        (element) => element.id === action.payload.id
+      );
+      state[elementIndex] = { ...state[elementIndex], ...action.payload };
+    },
+    remove(state, action) {
+      return state.filter((element) => element.id !== action.payload.id);
+    }
+  }
+})
+
+const { actions, reducer: taskReducer } = taskSlice;
+const { update, remove } = actions;
 
 export function taskCompleted(id) {
   return update({ id, completed: true });
@@ -21,17 +35,5 @@ export function taskDeleted(id) {
   return remove({ id });
 }
 
-const taskReducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(update, (state, action) => {
-      const elementIndex = state.findIndex(
-        (element) => element.id === action.payload.id
-      );
-      state[elementIndex] = { ...state[elementIndex], ...action.payload };
-    })
-    .addCase(remove, (state, action) => {
-      return state.filter((element) => element.id !== action.payload.id);
-    });
-});
 
 export default taskReducer;
