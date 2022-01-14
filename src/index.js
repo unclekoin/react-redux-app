@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
-import { initiateStore } from './store/store';
-import * as actions from './store/actions';
+import configureStore from './store/store';
+import * as actions from './store/task/actions';
 
-const store = initiateStore();
+const store = configureStore();
 
 const App = () => {
   const [state, setState] = useState(store.getState());
