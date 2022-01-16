@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import configureStore from './store/store';
-import { titleChanged, taskDeleted, completeTask } from './store/task';
+import {
+  titleChanged,
+  taskDeleted,
+  completeTask,
+  getTasks,
+} from './store/task';
 
 const store = configureStore();
 
@@ -10,6 +15,7 @@ const App = () => {
   const [state, setState] = useState(store.getState());
 
   useEffect(() => {
+    store.dispatch(getTasks());
     store.subscribe(() => {
       setState(store.getState());
     });
@@ -31,8 +37,14 @@ const App = () => {
           {state.map((task) => (
             <div className="card list-group-item" key={task.id}>
               <div className="card-body">
-                <p className="card-text">{task.title}</p>
-                <p className="card-text">{`Status Complete: ${task.completed}`}</p>
+                <p className="card-text">
+                  <span className="fw-bolder">Task #{task.id}:</span>{' '}
+                  {task.title}
+                </p>
+                <p className="card-text">
+                  <span className="fw-bolder">Status Complete:</span>{' '}
+                  {task.completed.toString()}
+                </p>
                 <div className="btn-group" role="group">
                   <button
                     className="btn btn-outline-primary"
