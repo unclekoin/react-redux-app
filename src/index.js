@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import configureStore from './store/store';
-import { taskCompleted, titleChanged, taskDeleted } from './store/task';
+import { titleChanged, taskDeleted, completeTask } from './store/task';
 
 const store = configureStore();
 
@@ -14,10 +14,6 @@ const App = () => {
       setState(store.getState());
     });
   }, []);
-
-  const completeTask = (taskId) => {
-    store.dispatch(taskCompleted(taskId));
-  };
 
   const changeTitle = (taskId) => {
     store.dispatch(titleChanged(taskId));
@@ -40,7 +36,7 @@ const App = () => {
                 <div className="btn-group" role="group">
                   <button
                     className="btn btn-outline-primary"
-                    onClick={() => completeTask(task.id)}
+                    onClick={() => store.dispatch(completeTask(task.id))}
                   >
                     Complete
                   </button>
