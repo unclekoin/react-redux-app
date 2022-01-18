@@ -10,6 +10,7 @@ import {
   loadTasks,
   getTasks,
   getTasksLoadingStatus,
+  taskCreate,
 } from './store/task';
 import { getError } from './store/errors';
 
@@ -33,6 +34,10 @@ const App = () => {
     dispatch(taskDeleted(taskId));
   };
 
+  const createTask = () => {
+    dispatch(taskCreate());
+  }
+
   if (isLoading)
     return (
       <div className="container d-flex justify-content-center pt-5">
@@ -52,6 +57,9 @@ const App = () => {
   return (
     <div className="container">
       <h1 className="text-center my-3">React Redux App</h1>
+      <button className="btn btn-primary mb-3" onClick={createTask}>
+        Create Task
+      </button>
       {state.length ? (
         <div className="list-group">
           {state.map((task) => (
@@ -79,7 +87,7 @@ const App = () => {
                     Change Title
                   </button>
                   <button
-                    className="btn btn-outline-primary"
+                    className="btn btn-outline-danger"
                     onClick={() => deleteTask(task.id)}
                   >
                     Delete
